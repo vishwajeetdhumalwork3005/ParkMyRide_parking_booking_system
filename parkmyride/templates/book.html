@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Book Slot - ParkMyRide{% endblock %}
+{% block content %}
+<h2>🅿️ Book Parking Slot</h2>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px;">
+  <div>
+    <div class="card">
+      <h3>{{ slot.slot_name }}</h3>
+      <p><strong>📍 Location:</strong> {{ slot.location.name }}</p>
+      <p><strong>Address:</strong> {{ slot.location.address }}</p>
+      <p><strong>🚗 Vehicle Type:</strong> {{ slot.vehicle_type }}</p>
+      <p><strong>💰 Price:</strong> <span style="font-size: 1.25rem; color: var(--teal);">{{ slot.hourly_price|inr }}</span>/hour</p>
+      <p>
+        <strong>Status:</strong>
+        {% if slot.is_available %}
+          <span class="badge available">✓ Available</span>
+        {% else %}
+          <span class="badge busy">✗ Booked</span>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <form method="post" action="" id="bookForm">
+    {% csrf_token %}
+    
+    <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <h3>Booking Details</h3>
+      
+      <label for="start_time">📅 Start Time</label>
+      <input type="datetime-local" id="start_time" name="start_time" required>
+      
+      <label for="end_time">📅 End Time</label>
+      <input type="datetime-local" id="end_time" name="end_time" required>
+      
+      <label for="vehicle_number">🏷️ Vehicle Number</label>
+      <input type="text" id="vehicle_number" name="vehicle_number" placeholder="ABC 1234" required pattern="[A-Z]{2}[A-Z]?\s?[0-9]{2,4}">
+      
+      <label for="payment_method">💳 Payment Method</label>
+      <select id="payment_method" name="payment_method" required>
+        <option value="">Select payment method</option>
+        <option value="Cash">💵 Cash</option>
+        <option value="Card">💳 Card</option>
+      </select>
+      
+      <div id="pricePreview">Estimated price: -</div>
+      
+      <div class="form-actions">
+        <button class="btn green" type="submit" id="submitBtn">✓ Confirm Booking</button>
+        <a class="btn" href="/search/">← Cancel</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const form = document.getElementById('bookForm')
+  if(!form) return
+  
+  const startEl = form.querySelector('input[name=start_time]')
+  const endEl = form.querySelector('input[name=end_time]')
+  const pricePreview = document.getElementById('pricePreview')
+  const submitBtn = document.getElementById('submitBtn')
+  const hourly = parseFloat('{{ slot.hourly_price }}')
+  
+  function update(){
+    const s = startEl.value
+    const e = endEl.value
+    
+    if(!s || !e) { 
+      pricePreview.textContent = 'Estimated price: -'
+      pricePreview.style.color = 'var(--gray-700)'
+      return 
+    }
+    
+    const sd = new Date(s)
+    const ed = new Date(e)
+    
+    if(isNaN(sd)||isNaN(ed)||ed<=sd){ 
+      pricePreview.textContent = 'Estimated price: Invalid time range'
+      pricePreview.style.color = 'var(--red)'
+      submitBtn.disabled = true
+      return 
+    }
+    
+    submitBtn.disabled = false
+    const hrs = (ed - sd) / (1000*60*60)
+    const total = (hrs * hourly).toFixed(2)
+    pricePreview.textContent = `Estimated price: ₹${total} (${hrs.toFixed(2)} hrs)`
+    pricePreview.style.color = 'var(--teal)'
+  }
+  
+  startEl.addEventListener('change', update)
+  endEl.addEventListener('change', update)
+  update()
+  
+  form.addEventListener('submit', function(e){
+    if(!confirm('Confirm booking?')){
+      e.preventDefault()
+    }
+  })
+})
+</script>
+
+<style>
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+{% endblock %}

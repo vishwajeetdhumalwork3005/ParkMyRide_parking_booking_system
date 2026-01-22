@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ParkMyRide - Find and book parking spots easily">
+  <title>{% block title %}ParkMyRide - Easy Parking Solutions{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/global.css">
+  <script src="/static/js/main.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <h1>🅿️ ParkMyRide</h1>
+    </div>
+  </header>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="/" title="Home">Home</a>
+      <a href="/book/" title="Book a parking slot">Book Slot</a>
+      <a href="/pricing/" title="View pricing">Pricing</a>
+      <a href="/contact/" title="Contact us">Contact</a>
+      {% if user.is_authenticated %}
+        <a href="/dashboard/" title="User dashboard">Dashboard</a>
+        <a href="/logout/" title="Logout">Logout</a>
+      {% else %}
+        <a href="/login/" title="Login to your account">Login</a>
+        <a href="/signup/" title="Create new account">Sign Up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="container" role="main">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <p>&copy; 2024 ParkMyRide. All rights reserved. | 
+        <a href="/" style="color: inherit;">Home</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

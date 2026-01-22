@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Booking Confirmation - ParkMyRide{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+    <h2 style="color: var(--green); margin: 0.5rem 0;">Booking Confirmed!</h2>
+    <p style="color: var(--gray-700); font-size: 1.05rem;">Your parking slot has been successfully reserved.</p>
+  </div>
+  
+  <div class="card" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid var(--green); margin-bottom: 2rem;">
+    <h3 style="color: var(--green); margin-top: 0;">📋 Booking Details</h3>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #fff; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+      <div>
+        <p style="margin: 0; color: var(--gray-700); font-size: 0.9rem;">Booking ID</p>
+        <p style="margin: 0.25rem 0 0 0; font-size: 1.25rem; font-weight: 700; color: var(--teal);">#{{ booking.id }}</p>
+      </div>
+      <div>
+        <p style="margin: 0; color: var(--gray-700); font-size: 0.9rem;">Status</p>
+        <p style="margin: 0.25rem 0 0 0; font-size: 1.25rem; font-weight: 700; color: var(--green);">{{ booking.status }}</p>
+      </div>
+    </div>
+    
+    <p style="margin: 1rem 0 0.5rem 0;"><strong>🅿️ Slot:</strong> {{ booking.slot.slot_name }}</p>
+    <p style="margin: 0.5rem 0;"><strong>📍 Location:</strong> {{ booking.slot.location.name }}</p>
+    <p style="margin: 0.5rem 0;"><strong>🚗 Vehicle:</strong> {{ booking.vehicle_number }}</p>
+    <p style="margin: 0.5rem 0;"><strong>📅 From:</strong> {{ booking.start_time }}</p>
+    <p style="margin: 0.5rem 0;"><strong>📅 To:</strong> {{ booking.end_time }}</p>
+    
+    <div style="background: #fff; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+      <p style="margin: 0; color: var(--gray-700); font-size: 0.9rem;">Total Amount</p>
+      <p style="margin: 0.5rem 0 0 0; font-size: 1.75rem; font-weight: 700; color: var(--teal);">{{ booking.total_price|inr }}</p>
+    </div>
+  </div>
+  
+  <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--amber); margin-bottom: 2rem;">
+    <p style="margin: 0; color: var(--gray-700);"><strong>📄 Important:</strong> Please arrive 10 minutes before your booking time. Keep your confirmation number handy at the parking entrance.</p>
+  </div>
+  
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <a class="btn book" href="/history/" style="flex: 1; text-align: center;">📋 View My Bookings</a>
+    <a class="btn" href="/" style="flex: 1; text-align: center;">🏠 Back to Home</a>
+  </div>
+</div>
+{% endblock %}

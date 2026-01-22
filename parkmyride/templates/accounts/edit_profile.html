@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile - ParkMyRide{% endblock %}
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+  <h2>⚙️ Edit Your Profile</h2>
+  
+  <form method="post" action="/edit-profile/">
+    {% csrf_token %}
+    
+    <label for="full_name">👤 Full Name</label>
+    <input type="text" id="full_name" name="full_name" value="{{ full_name }}" required placeholder="Your full name">
+    
+    <label for="email">✉️ Email Address</label>
+    <input type="email" id="email" name="email" value="{{ email }}" required placeholder="your@email.com">
+    
+    <label for="phone">📱 Phone Number</label>
+    <input type="text" id="phone" name="phone" value="{{ phone }}" placeholder="+91 98765 43210">
+    
+    <div class="form-actions">
+      <button class="btn green" type="submit" style="flex: 1;">✓ Save Changes</button>
+      <a class="btn" href="/dashboard/" style="flex: 0.5;">← Cancel</a>
+    </div>
+  </form>
+  
+  <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+    <p style="margin: 0.5rem 0; color: var(--gray-700);">Want to change your password? <a href="/password-reset/" style="color: var(--teal); font-weight: 500; text-decoration: none;">Click here</a></p>
+  </div>
+</div>
+{% endblock %}

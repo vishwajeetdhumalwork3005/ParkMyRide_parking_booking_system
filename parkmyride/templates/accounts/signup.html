@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up - ParkMyRide{% endblock %}
+{% block content %}
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(120deg, #f0fdfa 0%, #e0e7ff 100%);">
+  <div style="background: #fff; box-shadow: 0 8px 32px rgba(16, 185, 129, 0.10); border-radius: 18px; padding: 2.5rem 2rem; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center;">
+    <div style="font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--teal);">📝</div>
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Create Account</h2>
+    <form id="signupForm" method="post" action="/signup/" style="width: 100%; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+      {% csrf_token %}
+      <input type="text" id="full_name" name="full_name" required placeholder="Full Name" style="padding: 0.9rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <input type="email" id="email" name="email" required placeholder="Email Address" style="padding: 0.9rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <input type="text" id="phone" name="phone" placeholder="Phone Number" style="padding: 0.9rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <input type="password" id="password" name="password" required placeholder="Password (min 8 chars)" style="padding: 0.9rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm Password" style="padding: 0.9rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <button class="btn green" type="submit" style="width: 100%; font-size: 1.1rem;">Create Account</button>
+    </form>
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <span style="color: var(--gray-700);">Already have an account?</span> <a href="/login/" style="color: var(--teal); font-weight: 500; text-decoration: none;">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

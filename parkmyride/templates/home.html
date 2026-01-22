@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Available Parking - ParkMyRide{% endblock %}
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <h2>🅿️ Available Parking Spaces</h2>
+  <p style="color: var(--gray-700); font-size: 1.05rem;">Find and book your perfect parking spot in just a few clicks.</p>
+</div>
+
+{% if slots %}
+<div class="grid">
+  {% for slot in slots %}
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+      <h3 style="margin: 0;">{{ slot.slot_name }}</h3>
+      {% if slot.is_available %}
+        <span class="badge available">✓ Available</span>
+      {% else %}
+        <span class="badge busy">✗ Booked</span>
+      {% endif %}
+    </div>
+    
+    <p><strong>📍 Location:</strong> {{ slot.location.name }}</p>
+    <p style="color: var(--gray-700); font-size: 0.95rem;">{{ slot.location.address }}</p>
+    
+    <p><strong>🚗 Type:</strong> {{ slot.vehicle_type }}</p>
+    <p style="margin-bottom: 1.5rem;">
+      <strong style="font-size: 1.25rem; color: var(--teal);">{{ slot.hourly_price|inr }}</strong>
+      <span style="color: var(--gray-700);">/hour</span>
+    </p>
+    
+    <a class="btn book" href="/book/{{ slot.id }}/" style="width: 100%; text-align: center;">
+      📅 Book Now
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 3rem 1rem; background: #fff; border-radius: 8px; border: 1px solid var(--gray-200);">
+  <p style="font-size: 1.1rem; color: var(--gray-700); margin: 1rem 0;">No parking slots available at the moment.</p>
+  <p style="color: var(--gray-700);">Please check back later or contact support.</p>
+</div>
+{% endif %}
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card .btn {
+    margin-top: auto;
+  }
+</style>
+{% endblock %}

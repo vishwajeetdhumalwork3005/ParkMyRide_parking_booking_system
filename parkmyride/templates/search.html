@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Search Parking - ParkMyRide{% endblock %}
+{% block content %}
+<h2>🔍 Search Parking</h2>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; max-width: 1000px;">
+  <form method="get" action="/search/" class="search-form">
+    <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--gray-200);">
+      <h3>Filter Results</h3>
+      
+      <label for="location">📍 Location</label>
+      <select id="location" name="location">
+        <option value="">-- Any Location --</option>
+        {% for loc in locations %}
+          <option value="{{ loc.id }}" {% if request.GET.location == loc.id|stringformat:'s' %}selected{% endif %}>{{ loc.name }}</option>
+        {% endfor %}
+      </select>
+      
+      <label for="vehicle_type">🚗 Vehicle Type</label>
+      <select id="vehicle_type" name="vehicle_type">
+        <option value="">-- Any Type --</option>
+        <option value="Car" {% if request.GET.vehicle_type == 'Car' %}selected{% endif %}>🚗 Car</option>
+        <option value="Bike" {% if request.GET.vehicle_type == 'Bike' %}selected{% endif %}>🏍️ Bike</option>
+          <option value="Cycle" {% if request.GET.vehicle_type == 'Cycle' %}selected{% endif %}>🚲 Cycle</option>
+      </select>
+      
+      <div class="form-actions">
+        <button class="btn green" type="submit" style="flex: 1;">🔍 Search</button>
+        <button class="btn" type="reset">↺ Reset</button>
+      </div>
+    </div>
+  </form>
+  
+  <div>
+    <p style="color: var(--gray-700); font-size: 1rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px; border-left: 4px solid var(--teal);">
+      <strong>💡 Tip:</strong> Use the filters to narrow down your search and find the perfect parking spot for your vehicle.
+    </p>
+  </div>
+</div>
+
+{% if slots %}
+<h3 style="margin-bottom: 1.5rem;">Found {{ slots|length }} parking spot{{ slots|length|pluralize }}</h3>
+<div class="grid">
+  {% for slot in slots %}
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+      <h4 style="margin: 0;">{{ slot.slot_name }}</h4>
+      {% if slot.is_available %}
+        <span class="badge available">✓ Available</span>
+      {% else %}
+        <span class="badge busy">✗ Booked</span>
+      {% endif %}
+    </div>
+    <p><strong>📍</strong> {{ slot.location.name }}</p>
+    <p><strong>🚗 Type:</strong> {{ slot.vehicle_type }}</p>
+    <p style="margin-bottom: 1rem;">
+      <strong style="font-size: 1.25rem; color: var(--teal);">{{ slot.hourly_price|inr }}</strong>
+      <span style="color: var(--gray-700);">/hour</span>
+    </p>
+    <a class="btn book" href="/book/{{ slot.id }}/" style="width: 100%; text-align: center;">📅 Book Now</a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 3rem 1rem; background: #fff; border-radius: 8px; border: 1px solid var(--gray-200);">
+  <p style="font-size: 1.1rem; color: var(--gray-700); margin: 1rem 0;">퉪 No parking spots found matching your criteria.</p>
+  <p style="color: var(--gray-700);">Try adjusting your search filters or check back later.</p>
+  <button class="btn green" type="reset" onclick="document.querySelector('.search-form').reset(); window.location.reload();" style="margin-top: 1rem;">툜 Reset Filters</button>
+</div>
+{% endif %}
+
+<style>
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login - ParkMyRide{% endblock %}
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+  <h2>👺 Admin Login</h2>
+  <p style="color: var(--gray-700); margin-bottom: 1.5rem;">Please log in with your admin credentials to access the management dashboard.</p>
+  
+  <form method="post" action="/admin-login/">
+    {% csrf_token %}
+    
+    <label for="username">👤 Username</label>
+    <input type="text" id="username" name="username" required placeholder="admin username">
+    
+    <label for="password">🔒 Password</label>
+    <input type="password" id="password" name="password" required placeholder="Enter your password">
+    
+    <div class="form-actions">
+      <button class="btn green" type="submit" style="width: 100%;">✓ Login</button>
+    </div>
+  </form>
+  
+  <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+    <p style="margin: 0; color: var(--gray-700);">Back to <a href="/" style="color: var(--teal); font-weight: 500; text-decoration: none;">Main Site</a></p>
+  </div>
+</div>
+{% endblock %}

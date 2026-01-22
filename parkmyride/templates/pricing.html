@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Pricing - ParkMyRide{% endblock %}
+{% block content %}
+<h2>💰 Pricing</h2>
+
+<p style="color: var(--gray-700); font-size: 1.05rem; margin-bottom: 2rem;">Transparent pricing with no hidden charges. Rates vary by vehicle type and location.</p>
+
+<h3 style="margin-top: 2rem; margin-bottom: 1rem;">📊 Minimum Hourly Rates</h3>
+<div style="max-width: 500px;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>🚗 Vehicle Type</th>
+        <th>💵 Min Hourly Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in prices %}
+      <tr>
+        <td><strong>{{ p.vehicle_type }}</strong></td>
+        <td><strong style="color: var(--teal);">{{ p.min_price|inr }}</strong></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h3 style="margin-top: 2.5rem; margin-bottom: 1rem;">🅿️ Available Parking Slots</h3>
+<div class="grid">
+  {% for slot in slots %}
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+      <h4 style="margin: 0;">{{ slot.slot_name }}</h4>
+      {% if slot.is_available %}
+        <span class="badge available">✓ Available</span>
+      {% else %}
+        <span class="badge busy">✗ Booked</span>
+      {% endif %}
+    </div>
+    <p><strong>📍</strong> {{ slot.location.name }}</p>
+    <p><strong>🚗 Type:</strong> {{ slot.vehicle_type }}</p>
+    <p style="margin-bottom: 1rem;">
+      <strong style="font-size: 1.25rem; color: var(--teal);">{{ slot.hourly_price|inr }}</strong>
+      <span style="color: var(--gray-700);">/hour</span>
+    </p>
+    <a class="btn book" href="/book/{{ slot.id }}/" style="width: 100%; text-align: center;">📅 Book Now</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

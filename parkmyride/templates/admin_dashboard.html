@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - ParkMyRide{% endblock %}
+{% block content %}
+<h2>👺 Admin Dashboard</h2>
+
+<div class="dashboard-cards">
+  <a class="card-link" href="/manage-slots/" title="Manage parking slots and locations">
+    🅿️ Manage Slots
+  </a>
+  <a class="card-link" href="/manage-bookings/" title="View and manage all bookings">
+    📋 Manage Bookings
+  </a>
+  <a class="card-link" href="/reports/" title="View reports and analytics">
+    📊 Reports
+  </a>
+  <a class="card-link" href="/logout/" title="Logout from admin account" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-color: #fca5a5; color: var(--dark);">
+    🚀 Logout
+  </a>
+</div>
+{% endblock %}
